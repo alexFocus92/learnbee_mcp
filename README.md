@@ -5,15 +5,17 @@ colorFrom: blue
 colorTo: green
 sdk: gradio
 sdk_version: 5.33.0
-python_version: 3.12
+python_version: 3.13
 app_file: app.py
 pinned: true
 license: mit
-short_description: Interactive educational tutor for early childhood education (ages 3-6).
+short_description: Interactive educational tutor for primary education.
 thumbnail: https://huggingface.co/spaces/Agents-MCP-Hackathon/consilium_mcp/blob/main/assets/screenshot.png
 tags:
-  - agent-demo-track
-  - mcp-server-track
+  - building-mcp-track-creative
+  - building-mcp-track-consumer
+  - mcp-in-action-track-consumer
+  - mcp-in-action-track-creative
   - education
   - early-childhood
 ---

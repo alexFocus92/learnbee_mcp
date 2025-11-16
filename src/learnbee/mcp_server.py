@@ -87,6 +87,56 @@ def get_lesson_introduction(lesson_name: str) -> str:
         return f"Error generating introduction: {str(e)}"
 
 
+def create_lesson(topic: str, lesson_name: str = None, age_range: str = "3-6") -> str:
+    """
+    Create a new lesson by generating content with ChatGPT based on a topic.
+    The lesson will be saved to the lessons directory and can be used immediately.
+    
+    Args:
+        topic (str): The topic for the lesson (e.g., "dinosaurs", "space", "ocean animals").
+        lesson_name (str): Optional name for the lesson file. If not provided, will be generated from topic.
+        age_range (str): The target age range. Defaults to "3-6".
+    
+    Returns:
+        str: Success message with the lesson name, or an error message if creation fails.
+    """
+    lessons_dir = Path("./lessons")
+    
+    # Create lessons directory if it doesn't exist
+    lessons_dir.mkdir(exist_ok=True)
+    
+    # Generate lesson name from topic if not provided
+    if not lesson_name:
+        # Convert topic to a valid filename (lowercase, replace spaces with underscores)
+        lesson_name = topic.lower().strip().replace(" ", "_").replace("/", "_").replace("\\", "_")
+        # Remove special characters
+        lesson_name = "".join(c for c in lesson_name if c.isalnum() or c in ("_", "-"))
+    
+    # Remove .txt extension if present
+    if lesson_name.endswith(".txt"):
+        lesson_name = lesson_name[:-4]
+    
+    lesson_file = lessons_dir / f"{lesson_name}.txt"
+    
+    # Check if lesson already exists
+    if lesson_file.exists():
+        return f"Error: A lesson named '{lesson_name}' already exists. Please choose a different name."
+    
+    try:
+        # Generate lesson content using LLM
+        call_llm = LLMCall()
+        lesson_content = call_llm.generate_lesson(topic, age_range)
+        
+        # Save lesson to file
+        with open(lesson_file, "w", encoding="utf-8") as f:
+            f.write(lesson_content)
+        
+        return f"✅ Successfully created lesson '{lesson_name}' about '{topic}'! The lesson is now available in the lesson list and ready to use with the tutor."
+    
+    except Exception as e:
+        return f"Error creating lesson: {str(e)}"
+
+
 if __name__ == "__main__":
     print("Available lessons:", get_lesson_list())
 

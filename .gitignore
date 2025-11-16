@@ -17,3 +17,6 @@ MEMO.md
 backup/
 
 !.gitkeep
+
+.DS_Store/
+__pycache__

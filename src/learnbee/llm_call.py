@@ -141,7 +141,7 @@ class LLMCall:
         return concepts[:10]
 
     def generate_lesson_introduction(
-        self, lesson_content: str, lesson_name: str, concepts: list[str]
+        self, lesson_content: str, lesson_name: str, concepts: list[str], language: str = "English"
     ) -> str:
         """
         Generate an educational introduction for the lesson including:
@@ -153,6 +153,7 @@ class LLMCall:
             lesson_content (str): The content of the lesson.
             lesson_name (str): The name of the lesson.
             concepts (list[str]): List of key concepts extracted from the lesson.
+            language (str): The language to generate the introduction in. Defaults to "English".
 
         Returns:
             str: A formatted introduction with summary, concepts, and example questions.
@@ -160,20 +161,22 @@ class LLMCall:
         concepts_text = ", ".join(concepts[:8])  # Show up to 8 concepts
         
         system_prompt = (
-            "You are an educational expert creating an introduction for a lesson for children ages 3-12. "
-            "Create a friendly, engaging introduction that includes:\n\n"
-            "1. A brief, exciting summary of what the child will learn (2-3 sentences, very simple language)\n"
-            "2. A list of the key concepts they'll explore\n"
-            "3. 2-3 example questions that the tutor could ask to start the conversation and guide the child\n\n"
-            "Format your response as follows:\n"
-            "SUMMARY:\n"
-            "[Brief summary here]\n\n"
-            "KEY CONCEPTS:\n"
-            "[List concepts here, one per line with a bullet point]\n\n"
-            "EXAMPLE QUESTIONS TO GET STARTED:\n"
-            "[2-3 engaging questions, one per line with a bullet point]\n\n"
-            "Use very simple, age-appropriate language. Make it fun and exciting! "
-            "The questions should be open-ended and encourage exploration."
+            f"You are an educational expert creating an introduction for a lesson for children ages 3-12. "
+            f"IMPORTANT: You must write the ENTIRE introduction in {language}. "
+            f"Create a friendly, engaging introduction that includes:\n\n"
+            f"1. A brief, exciting summary of what the child will learn (2-3 sentences, very simple language)\n"
+            f"2. A list of the key concepts they'll explore\n"
+            f"3. 2-3 example questions that the tutor could ask to start the conversation and guide the child\n\n"
+            f"Format your response as follows:\n"
+            f"SUMMARY:\n"
+            f"[Brief summary here in {language}]\n\n"
+            f"KEY CONCEPTS:\n"
+            f"[List concepts here, one per line with a bullet point]\n\n"
+            f"EXAMPLE QUESTIONS TO GET STARTED:\n"
+            f"[2-3 engaging questions, one per line with a bullet point, in {language}]\n\n"
+            f"Use very simple, age-appropriate language in {language}. Make it fun and exciting! "
+            f"The questions should be open-ended and encourage exploration. "
+            f"Everything must be written in {language}."
         )
 
         user_prompt = (
@@ -197,3 +200,50 @@ class LLMCall:
 
         introduction = response.choices[0].message.content
         return introduction
+
+    def generate_lesson(self, topic: str, age_range: str = "3-6") -> str:
+        """
+        Generate a complete lesson content based on a topic using ChatGPT.
+        
+        Args:
+            topic (str): The topic for the lesson (e.g., "dinosaurs", "space", "ocean animals").
+            age_range (str): The target age range. Defaults to "3-6".
+        
+        Returns:
+            str: The generated lesson content suitable for early childhood education.
+        """
+        system_prompt = (
+            f"You are an expert educational content creator specializing in early childhood education "
+            f"(ages {age_range}). Create a comprehensive, engaging lesson about '{topic}'.\n\n"
+            "The lesson should:\n"
+            "1. Be written in simple, age-appropriate language\n"
+            "2. Include key concepts and facts about the topic\n"
+            "3. Be structured in a way that encourages exploration and curiosity\n"
+            "4. Include examples and descriptions that children can relate to\n"
+            "5. Be educational but also fun and engaging\n"
+            "6. Be approximately 500-1000 words long\n"
+            "7. Use clear, short sentences\n"
+            "8. Include concrete examples from children's daily lives when possible\n\n"
+            "Format the lesson as plain text without markdown. Make it ready to be used by an educational tutor."
+        )
+        
+        user_prompt = (
+            f"Create a lesson about '{topic}' for children ages {age_range}. "
+            f"Make it engaging, educational, and age-appropriate. "
+            f"Include key concepts, interesting facts, and examples that will help children learn about {topic}."
+        )
+        
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ]
+        
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            temperature=0.7,  # Creative but consistent
+            max_tokens=5000,  # Allow for comprehensive lesson content
+        )
+        
+        lesson_content = response.choices[0].message.content
+        return lesson_content
