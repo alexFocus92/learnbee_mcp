@@ -1,0 +1,2 @@
+openai==2.8.0
+gradio[mcp]>=5.49.0
