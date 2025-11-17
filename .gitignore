@@ -1,5 +1,6 @@
 # Python-generated files
 __pycache__/
+__pycache__
 *.py[oc]
 build/
 dist/
@@ -16,7 +17,10 @@ wheels/
 MEMO.md
 backup/
 
-!.gitkeep
+# macOS
+.DS_Store
 
-.DS_Store/
-__pycache__
+# Images
+*.png
+
+!.gitkeep

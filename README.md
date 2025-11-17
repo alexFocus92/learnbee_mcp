@@ -10,7 +10,7 @@ app_file: app.py
 pinned: true
 license: mit
 short_description: Interactive educational tutor for primary education.
-thumbnail: https://huggingface.co/spaces/Agents-MCP-Hackathon/consilium_mcp/blob/main/assets/screenshot.png
+thumbnail: https://huggingface.co/spaces/Agents-MCP-Hackathon/consilium_mcp/blob/main/assets/logo_learnbee.png
 tags:
   - building-mcp-track-creative
   - building-mcp-track-consumer
@@ -24,6 +24,10 @@ tags:
 
 
 # Learnbee-mcp 🎓
+
+## Website
+access the live demo here: 
+[Learnbee-mcp on Hugging Face Spaces](https://huggingface.co/spaces/MCP-1st-Birthday/learnbee_mcp)
 
 ## What is this?
 
@@ -189,3 +193,10 @@ Contributions are welcome. Please open an issue or pull request if you have sugg
 ---
 
 **Learnbee-mcp** - Making learning interactive and fun for the little ones 🎓✨
+
+
+### 📬 Contact info
+
+* GitHub: @alexFocus92
+* Hugging Face: @AlexFocus
+* X: @alexFocus8

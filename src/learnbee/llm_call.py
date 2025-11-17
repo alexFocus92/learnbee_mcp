@@ -104,11 +104,11 @@ class LLMCall:
             lesson_content (str): The content of the lesson.
 
         Returns:
-            list[str]: A list of 5 to 10 key concepts from the lesson.
+            list[str]: A list of 2 to 5 key concepts from the lesson.
         """
         system_prompt = (
-            "Your task is to extract 5 to 10 key educational concepts from the provided lesson content. "
-            "These concepts should be appropriate for early childhood education (ages 3-6). "
+            "Your task is to extract 2 to 5 key educational concepts from the provided lesson content. "
+            "These concepts should be appropriate for early childhood education (ages 3-12). "
             "Return only the concept names, one per line. "
             "Do not include any additional text, explanations, or numbering. "
             "Each concept should be a simple, clear phrase that a child could understand. "
